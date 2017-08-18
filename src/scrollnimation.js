@@ -11,7 +11,7 @@ class Scrollnimation {
       animSpeed: 1,
       onDisable: () => {},
       onEnable: () => {},
-      onStep: n => {}
+      onStep: () => {}
     };
 
     this.config = Object.assign({}, defaults, config);
