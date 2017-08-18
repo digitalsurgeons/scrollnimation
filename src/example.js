@@ -2,7 +2,6 @@
 // is step scrolled change
 // removed animSpeed
 
-
 class Scrollnimation {
   constructor(el, config = {}) {
     if (!el) return;
@@ -41,8 +40,7 @@ class Scrollnimation {
     if (this.isThrottled() || !this.state.machesMedia) return;
 
     const vals = this.getRectValues();
-    const isStepScrolled = step =>
-      vals.elementOffset >= vals.height * step;
+    const isStepScrolled = step => vals.elementOffset >= vals.height * step;
     const getClassAction = step => (isStepScrolled(step) ? "add" : "remove");
     const getStepClassName = i => `${this.config.stepModifierClass}-${i}`;
     const toggleClass = (step, i) =>
@@ -56,8 +54,10 @@ class Scrollnimation {
     const currentStep = this.config.steps.indexOf(lastActive);
 
     if (currentStep > -1) {
-      if (this.state.currentStep < currentStep) this.config.onStepNext(currentStep);
-      if (this.state.currentStep > currentStep) this.config.onStepBack(currentStep);
+      if (this.state.currentStep < currentStep)
+        this.config.onStepNext(currentStep);
+      if (this.state.currentStep > currentStep)
+        this.config.onStepBack(currentStep);
       this.state.currentStep = currentStep;
     }
   }
@@ -109,27 +109,32 @@ class Scrollnimation {
   }
 }
 
-
-const phoneEl = document.querySelector('.Scrollnimation__phone')
-const phoneLines = [...phoneEl.querySelectorAll('#iPhone-6-Plus *')]
-const strokeLine = line => line.style.strokeDashoffset = '0';
+const phoneEl = document.querySelector(".Scrollnimation__phone");
+const phoneLines = [...phoneEl.querySelectorAll("#iPhone-6-Plus > *:not(g)")];
+const strokeLine = line => (line.style.strokeDashoffset = "0");
 const unstrokeLine = line => {
   const length = line.getTotalLength();
-  line.style.strokeDasharray = length + ' ' + length;
+  line.style.strokeDasharray = length + " " + length;
   line.style.strokeDashoffset = length;
-}
-const strokePhone   = () => phoneLines.forEach(strokeLine)
-const unstrokePhone = () => phoneLines.forEach(unstrokeLine)
+};
+const showPhone = () => (phoneEl.style.opacity = 1);
+const strokePhone = () => phoneLines.forEach(strokeLine);
+const unstrokePhone = () => phoneLines.forEach(unstrokeLine);
 
 // prepare phone
-unstrokePhone() // this takes 1 sec
-setTimeout(() => phoneEl.style.opacity = 1, 1000) 
+unstrokePhone(); // this takes 1 sec
+setTimeout(showPhone, 1000);
 
+const scrollnimarionEl = document.querySelector(".Scrollnimation");
 
-const scrollnimarionEl = document.querySelector('.Scrollnimation')
-
-new Scrollnimation( scrollnimarionEl, {
-  steps: [0, 0.1, 1],
-  onStepNext: n => (n == 1) && strokePhone(),
-  onStepBack: n => (n == 0) && unstrokePhone()
+new Scrollnimation(scrollnimarionEl, {
+  steps: [0, 0.1, 0.3, 0.5, 0.7, 1],
+  onStepNext: n => {
+    (n == 1) && strokePhone();
+    (n == 4) && unstrokePhone();
+  },
+  onStepBack: n => {
+    (n == 0) && unstrokePhone();
+    (n == 3) && strokePhone();
+  }
 });
