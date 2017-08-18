@@ -40,7 +40,7 @@ class Scrollnimation {
     if (this.isThrottled() || !this.state.machesMedia) return;
 
     const vals = this.getRectValues();
-    const isStepScrolled = step => vals.elementOffset >= vals.height * step;
+    const isStepScrolled = step => vals.offset >= vals.height * step;
     const getClassAction = step => (isStepScrolled(step) ? "add" : "remove");
     const getStepClassName = i => `${this.config.stepModifierClass}-${i}`;
     const toggleClass = (step, i) =>
@@ -48,7 +48,7 @@ class Scrollnimation {
 
     this.config.steps.forEach(toggleClass);
 
-    this.state.isAnimating = vals.elementOffset > 0;
+    this.state.isAnimating = vals.offset > 0;
 
     const lastActive = this.config.steps.filter(isStepScrolled).pop();
     const currentStep = this.config.steps.indexOf(lastActive);
@@ -103,9 +103,9 @@ class Scrollnimation {
     const rect = this.panel.getBoundingClientRect();
     const top = rect.top * -1; // make vals positive
     const height = rect.height;
-    const elementOffset = top + window.innerHeight;
+    const offset = top + window.innerHeight;
 
-    return { top, height, elementOffset };
+    return { top, height, offset };
   }
 }
 
@@ -130,11 +130,11 @@ const scrollnimarionEl = document.querySelector(".Scrollnimation");
 new Scrollnimation(scrollnimarionEl, {
   steps: [0, 0.1, 0.3, 0.5, 0.7, 1],
   onStepNext: n => {
-    (n == 1) && strokePhone();
-    (n == 4) && unstrokePhone();
+    if (n == 1) strokePhone();
+    if (n == 4) unstrokePhone();
   },
   onStepBack: n => {
-    (n == 0) && unstrokePhone();
-    (n == 3) && strokePhone();
+    if (n == 0) unstrokePhone();
+    if (n == 3) strokePhone();
   }
 });
