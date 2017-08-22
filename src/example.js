@@ -131,10 +131,10 @@ new Scrollnimation(scrollnimarionEl, {
   steps: [0, 0.1, 0.3, 0.5, 0.7, 1],
   onStepNext: n => {
     if (n == 1) strokePhone();
-    if (n == 4) unstrokePhone();
+    if (n == 2) unstrokePhone();
   },
   onStepBack: n => {
     if (n == 0) unstrokePhone();
-    if (n == 3) strokePhone();
+    if (n == 1) strokePhone();
   }
 });
